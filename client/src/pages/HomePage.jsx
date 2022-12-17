@@ -1,14 +1,32 @@
 import React, { useState } from 'react';
 import NavBarComponent from '../component/NavBarComponent.jsx';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { setDataCity } from '../redux/CitySlice.jsx';
+import { getToServerWithTokenAndUserObject } from '../services/getAPI.jsx';
 
 export default function HomePage() {
 	const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 	const nav = useNavigate();
-	if (user.data) {
-		nav('/login');
-	}
+
+	useEffect(()=>{
+    if (!user.data) {
+      nav('/login');
+    }
+		getCity();
+	},[])
+
+	const getCity = () => {
+    getToServerWithTokenAndUserObject('/v1/city',
+    {},user.accessToken)
+    .then((result) => {
+      dispatch(setDataCity(result.data));
+    })
+    .catch((result) => toast.error(result.message));
+  } 
+
 	return (
 		<div
 			className="d-flex flex-column justify-content-center align-items-center"

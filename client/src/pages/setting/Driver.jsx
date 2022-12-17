@@ -15,10 +15,6 @@ export default function Driver(props){
   const [loadingDelete,setLoadingDelete] = useState(false);
   const dispatch = useDispatch();
 
-  useEffect(()=>{
-    getListCar();
-  },[]);
-
   const createDriver = (e) =>{
     if(!carName) toast.error("Name car is required");
     else if(!maxUser) toast.error("Max user car is required");
@@ -65,6 +61,7 @@ export default function Driver(props){
       .then((result) => {
         toast.success(result.message);
         getListCar();
+        dispatch(setDataDriver([]));
       })
       .catch((text) => toast.error(text)).finally(() => setLoadingDelete(false));
     }
@@ -106,7 +103,7 @@ export default function Driver(props){
                     {value.status==5 && <th className='text-center text-capitalize' style={{backgroundColor:"green",color:"white"}} scope="row">accepted</th>}
                     {value.status==6 && <th className='text-center text-capitalize' style={{backgroundColor:"red",color:"white"}} scope="row">Rejected</th>}
                     <th className='text-center' scope="row" style={{width:"200px"}}>
-                    {loading ? <div className="spinner-grow"></div> :
+                    {loadingDelete ? <div className="spinner-grow"></div> :
                       <button
                         onClick={e=>deleteDriver(value.id)}
                         className={`btn border-0 btn-danger rounded-pill text-uppercase fw-bold`}

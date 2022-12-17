@@ -1,4 +1,4 @@
-const baseURL = 'http://localhost:8080';
+const baseURL = 'https://share-car-api.onrender.com';
 
 export function postToServer(url, bodyObject) {
 	return new Promise((resolve, reject) =>
@@ -56,6 +56,30 @@ export function callToServerWithTokenAndUserObject(method,url, userObject ,bodyO
 			credentials: 'same-origin',
 			user: JSON.stringify(userObject),
 			body: JSON.stringify(bodyObject),
+		}).then((response) => {
+				if (response.status === 419) {
+					alert('Your session is already expired because you are idle for too long. Page will automatic refesh.');
+					window.location.reload();
+				}
+				// if(response.status === 400) response.json().then((json) => resolve(json))
+				if (response.ok) {
+					const contentType = response.headers.get('content-type');
+					if (contentType && contentType.indexOf('application/json') !== -1)
+						response.json().then((json) => resolve(json));
+					else response.json().then((json) => resolve(json));
+				} else response.json().then((json) => reject(json));
+			})
+			.catch((err) => reject(err)),
+	);
+}
+
+export function getToServerWithTokenAndUserObject(url, userObject, token) {
+	return new Promise((resolve, reject) =>
+		fetch(baseURL + url, {
+			method: 'get',
+			headers: { 'Content-Type': 'application/json', token: `Bearer ${token}` },
+			credentials: 'same-origin',
+			user: JSON.stringify(userObject),
 		}).then((response) => {
 				if (response.status === 419) {
 					alert('Your session is already expired because you are idle for too long. Page will automatic refesh.');
