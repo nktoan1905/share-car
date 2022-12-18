@@ -93,3 +93,7 @@
   height: 50px;
   border-radius: 50%;
 }
+
+.trip-hover:hover{
+  background-color: rgb(210, 224, 238);
+}

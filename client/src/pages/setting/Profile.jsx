@@ -8,12 +8,14 @@ import Driver from './Driver';
 import TripRegister from './TripRegister';
 import { setDataDriver } from '../../redux/DriverSlice';
 import { callToServerWithTokenAndUserObject } from '../../services/getAPI';
+import MyListTrip from './MyListTrip';
 
 const FONT_SIZE = '15px';
 
 export default function Profile(props){
   const [selectedTab,setSelectedTab] = useState(0);
   const user = useSelector(state=>state.user.data);
+  const driver = useSelector(state=>state.driver.data);
   const dispatch = useDispatch();
   let currentTab=null
 
@@ -40,6 +42,8 @@ export default function Profile(props){
       break;
     case 2: currentTab = <TripRegister FONT_SIZE={FONT_SIZE}/>
       break;
+    case 3: currentTab = <MyListTrip FONT_SIZE={FONT_SIZE} />
+      break;
   }
 
   return <div className="container-fluid p-0">
@@ -59,10 +63,18 @@ export default function Profile(props){
               <span className="material-symbols-outlined me-1">directions_car</span>
               <span className="d-none d-lg-block">Driver</span>
             </a></li>
-            <li className="nav-item"><a className={`text-uppercase d-flex align-items-center justify-content-center nav-link ${(selectedTab==2)?"vc-blue active":"text-secondary nav-link-non-active"}`} style={{cursor:"pointer"}} onClick={e=>setSelectedTab(2)}>
-              <span className="material-symbols-outlined me-1">directions_car</span>
-              <span className="d-none d-lg-block">Trip</span>
-            </a></li>
+            {
+              driver && <li className="nav-item"><a className={`text-uppercase d-flex align-items-center justify-content-center nav-link ${(selectedTab==2)?"vc-blue active":"text-secondary nav-link-non-active"}`} style={{cursor:"pointer"}} onClick={e=>setSelectedTab(2)}>
+                <span className="material-symbols-outlined me-1">pacemaker</span>
+                <span className="d-none d-lg-block">Trip</span>
+              </a></li>
+            }
+            {
+              driver && <li className="nav-item"><a className={`text-uppercase d-flex align-items-center justify-content-center nav-link ${(selectedTab==3)?"vc-blue active":"text-secondary nav-link-non-active"}`} style={{cursor:"pointer"}} onClick={e=>setSelectedTab(3)}>
+                <span className="material-symbols-outlined me-1">format_list_bulleted</span>
+                <span className="d-none d-lg-block">List Trip</span>
+              </a></li>
+            }
           </ul>
           {currentTab}
       </div>

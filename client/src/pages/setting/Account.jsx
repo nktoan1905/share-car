@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import { getDay } from '../../common/Commom';
 import { TextFieldEditable } from '../../common/FieldInput';
 import ButtonComponent from '../../component/ButtonComponent';
 import { setData } from '../../redux/UserSlice';
@@ -57,7 +58,7 @@ export default function Account(props){
       </div> 
       <div className='d-flex flex-row justify-content-start align-items-center my-4' style={{borderBottom:"double",paddingBottom:"5px"}}>
         <span className='sc-heading text-uppercase' style={{width:"300px"}}>birth day:</span>
-        <TextFieldEditable type="date" fontSize={props.FONT_SIZE} width="100%" disabled={false} value={age} save={value=>setAge(value)} required={true}/>
+        <TextFieldEditable type="date" fontSize={props.FONT_SIZE} width="100%" disabled={false} value={getDay(age)} save={value=>setAge(value)} required={true}/>
       </div>
       <div className='d-flex flex-row justify-content-start align-items-center my-4' style={{borderBottom:"double",paddingBottom:"5px"}}>
         <span className='sc-heading text-uppercase' style={{width:"300px"}}>phone Number:</span>
