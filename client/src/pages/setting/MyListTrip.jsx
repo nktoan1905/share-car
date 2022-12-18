@@ -55,6 +55,17 @@ export default function MyListTrip(props){
     }
   }
 
+  const changeStatusTrip = (tripId) => {
+    if(confirm("Do you want to change status this trip?")){
+      callToServerWithTokenAndUserObject("put",`/v1/trip/${tripId}`,{id: user.id},{},user.accessToken)
+      .then((result) => {
+        toast.success(result.message);
+        getMyTrip();
+      })
+      .catch((text) => toast.error(text));
+    }
+  }
+
   console.log(guest)
 
   return <div className='d-flex flex-column mb-5 justify-content-center align-items-center w-100'>
@@ -84,19 +95,48 @@ export default function MyListTrip(props){
                     <th className='text-center' scope="row">{value.startPosition}</th>
                     <th className='text-center' scope="row">{value.endPosition}</th>
                     <th className='text-center' scope="row">{getDay(value.startAt)}</th>
-                    <th className='text-center' scope="row">{value.status?value.status:"null"}</th>
+                    {value.status==7 && <th className='text-center text-capitalize' style={{color:"white"}} scope="row">
+                    <button
+                          type="button"
+                          onClick={e=>changeStatusTrip(value.id)}
+                          className={`btn border-0 btn-warning rounded-pill text-uppercase fw-bold`}
+                          style={{ color: 'white', width: '120px'}}>
+                          Waiting
+                        </button>
+                      </th>
+                    }
+                    {value.status==8 && <th className='text-center text-capitalize' style={{color:"white"}} scope="row">
+                    <button
+                          type="button"
+                          onClick={e=>changeStatusTrip(value.id)}
+                          className={`btn border-0 btn-success rounded-pill text-uppercase fw-bold`}
+                          style={{ color: 'white', width: '120px'}}>
+                          Starting
+                        </button>
+                      </th>
+                    }
+                    {value.status==9 && <th className='text-center text-capitalize' style={{color:"white"}} scope="row">
+                    <button
+                          type="button"
+                          className={`btn border-0 btn-danger rounded-pill text-uppercase fw-bold`}
+                          disabled={true}
+                          style={{ color: 'white', width: '120px'}}>
+                          End
+                        </button>
+                      </th>
+                    }
                     <th className='text-center' scope="row" style={{width:"100px"}}>
                         <button
-                        type="button"
-                        data-bs-toggle="modal" 
-                        data-bs-target="#exampleModal"
-                        onClick={e=>getGuestOfTrip(value.id)}
-                        className={`btn border-0 btn-info rounded-pill text-uppercase fw-bold`}
-                        style={{ color: 'white', width: '70px'}}>
-                        <span className="material-symbols-outlined">
-                          groups
-                        </span>
-                      </button>
+                          type="button"
+                          data-bs-toggle="modal" 
+                          data-bs-target="#exampleModal"
+                          onClick={e=>getGuestOfTrip(value.id)}
+                          className={`btn border-0 btn-info rounded-pill text-uppercase fw-bold`}
+                          style={{ color: 'white', width: '70px'}}>
+                          <span className="material-symbols-outlined">
+                            groups
+                          </span>
+                        </button>
                     </th>
                     <th className='text-center' scope="row" style={{width:"200px"}}>
                         <button
