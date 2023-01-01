@@ -1,0 +1,34 @@
+{
+  "development": {
+    "username": "share_car_user",
+    "password": "VW7w0W5OLdhv1XCYgsSRPlvTsCuuCz0x",
+    "database": "share_car",
+    "host": "dpg-cedjs71a6gdvngfph72g-a.singapore-postgres.render.com",
+    "dialect": "postgres",
+    "logging": false,
+    "query": {
+      "raw": true
+    },
+    "timezone": "+07:00",
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    }
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "database_test",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "root",
+    "password": null,
+    "database": "database_production",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}
